@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ca">
+<head>
+    <meta charset="utf-8">
+    <title>IA Institut</title>
+</head>
+<body>
+    <h1>Preguntes freqüents - Institut</h1>
+    <form method="POST">
+        <label for="pregunta">Escriu la teva pregunta:</label><br>
+        <input type="text" id="pregunta" name="pregunta" required>
+        <button type="submit">Enviar</button>
+    </form>
+    {% if resposta %}
+    <h2>Resposta:</h2>
+    <p>{{ resposta | safe }}</p>
+    {% endif %}
+</body>
+</html>
