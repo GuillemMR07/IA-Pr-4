@@ -21,14 +21,19 @@ def respondre_pregunta(pregunta: str) -> str:
     cursor.execute("SELECT paraules_clau, resposta FROM preguntes_respostes")
     resultats = cursor.fetchall()
 
-    for paraules_clau, resposta in resultats:
-        claus = paraules_clau.split(",")
-        if any(clau.strip() in pregunta for clau in claus):
-            conn.close()
-            return resposta
+      for paraules_clau, resposta in resultats:
+        claus = [clau.strip() for clau in paraules_clau.split(",")]
+        puntuacio = sum(1 for clau in claus if clau in pregunta)
+        if puntuacio > millor_puntuacio:
+            millor_puntuacio = puntuacio
+            millor_match = resposta
 
     conn.close()
-    return "Ho sento, no tinc informació sobre això. Contacta amb l'institut per més detalls."
+
+    if millor_puntuacio > 0:
+        return millor_match
+    else:
+        return "Ho sento, no tinc informació sobre això. Contacta amb l'institut per més detalls."
 
 def buscar_pdf_excursions():
     carpeta = "excursions"
@@ -37,3 +42,4 @@ def buscar_pdf_excursions():
         # Retorna el primer que trobi (o pots ordenar per data si cal)
         return coincidencies[0]
     return None
+
